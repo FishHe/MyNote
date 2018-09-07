@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>net.sourceforge.bprocessor.gl.tool</OriginalElement>
+  <nodes>
+    <node x="870.6234567901233" y="323.0">net.sourceforge.bprocessor.gl.tool.RotationTool</node>
+    <node x="1401.6234567901233" y="202.0">net.sourceforge.bprocessor.gl.tool.ClipplaneTool</node>
+    <node x="595.0609567901233" y="323.0">net.sourceforge.bprocessor.gl.tool.RectTool</node>
+    <node x="688.6234567901233" y="202.0">net.sourceforge.bprocessor.gl.tool.FourTool</node>
+    <node x="1013.6234567901233" y="323.0">net.sourceforge.bprocessor.gl.tool.OffsetTool</node>
+    <node x="808.6234567901233" y="202.0">net.sourceforge.bprocessor.gl.tool.FocusTool</node>
+    <node x="894.1234567901233" y="0.0">net.sourceforge.bprocessor.gl.tool.Tool</node>
+    <node x="137.0" y="480.0">net.sourceforge.bprocessor.gl.tool.OrbitStrategy</node>
+    <node x="283.0" y="480.0">net.sourceforge.bprocessor.gl.tool.SelectStrategy</node>
+    <node x="1084.6234567901233" y="202.0">net.sourceforge.bprocessor.gl.tool.SpaceSelectTool</node>
+    <node x="266.6234567901233" y="202.0">net.sourceforge.bprocessor.gl.tool.PanTool</node>
+    <node x="1137.0" y="399.0">net.sourceforge.bprocessor.gl.tool.PasteActionListener</node>
+    <node x="458.0" y="399.0">net.sourceforge.bprocessor.gl.tool.CreateSpaceActionListener</node>
+    <node x="1247.6234567901233" y="202.0">net.sourceforge.bprocessor.gl.tool.CameraFlyTool</node>
+    <node x="926.0" y="399.0">net.sourceforge.bprocessor.gl.tool.SpacePopupListener</node>
+    <node x="1295.6234567901233" y="323.0">net.sourceforge.bprocessor.gl.tool.ConstructorTool</node>
+    <node x="0.5" y="202.0">net.sourceforge.bprocessor.gl.tool.SelectTool</node>
+    <node x="1605.6234567901233" y="323.0">net.sourceforge.bprocessor.gl.tool.RelationTool</node>
+    <node x="161.0" y="556.0">net.sourceforge.bprocessor.gl.tool.ClickBox</node>
+    <node x="705.0" y="399.0">net.sourceforge.bprocessor.gl.tool.DomainPopupListener</node>
+    <node x="381.6234567901233" y="202.0">net.sourceforge.bprocessor.gl.tool.CameraTool</node>
+    <node x="714.0609567901233" y="323.0">net.sourceforge.bprocessor.gl.tool.Protractor</node>
+    <node x="1677.6234567901233" y="202.0">net.sourceforge.bprocessor.gl.tool.EraserTool</node>
+    <node x="1457.6234567901233" y="323.0">net.sourceforge.bprocessor.gl.tool.TapeMeasure</node>
+    <node x="0.0" y="323.0">net.sourceforge.bprocessor.gl.tool.SpaceTool</node>
+    <node x="152.0" y="399.0">net.sourceforge.bprocessor.gl.tool.Strategy</node>
+    <node x="1746.6234567901233" y="323.0">net.sourceforge.bprocessor.gl.tool.ExtendTool</node>
+    <node x="870.1234567901233" y="81.0">net.sourceforge.bprocessor.gl.tool.AbstractTool</node>
+    <node x="381.0609567901233" y="323.0">net.sourceforge.bprocessor.gl.tool.ArcTool</node>
+    <node x="494.0609567901234" y="323.0">net.sourceforge.bprocessor.gl.tool.Pencil</node>
+    <node x="0.0" y="480.0">net.sourceforge.bprocessor.gl.tool.PanStrategy</node>
+    <node x="0.0" y="556.0">net.sourceforge.bprocessor.gl.tool.ToolFactory</node>
+    <node x="1549.6234567901233" y="202.0">net.sourceforge.bprocessor.gl.tool.ZoomTool</node>
+    <node x="935.6234567901233" y="202.0">net.sourceforge.bprocessor.gl.tool.AbstractPencil</node>
+    <node x="520.6234567901233" y="202.0">net.sourceforge.bprocessor.gl.tool.CameraWalkTool</node>
+    <node x="1342.0" y="399.0">net.sourceforge.bprocessor.gl.tool.CopyActionListener</node>
+    <node x="303.0" y="556.0">net.sourceforge.bprocessor.gl.tool.Protract</node>
+    <node x="1142.6234567901233" y="323.0">net.sourceforge.bprocessor.gl.tool.FinalMoveTool</node>
+    <node x="234.06095679012333" y="323.0">net.sourceforge.bprocessor.gl.tool.ExtrusionTool</node>
+    <node x="1546.0" y="399.0">net.sourceforge.bprocessor.gl.tool.ShiftActionListener</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="net.sourceforge.bprocessor.gl.tool.FourTool" target="net.sourceforge.bprocessor.gl.tool.AbstractTool">
+      <point x="0.0" y="-15.5" />
+      <point x="738.6234567901233" y="172.0" />
+      <point x="915.8734567901233" y="172.0" />
+      <point x="-15.25" y="15.5" />
+    </edge>
+    <edge source="net.sourceforge.bprocessor.gl.tool.ExtrusionTool" target="net.sourceforge.bprocessor.gl.tool.AbstractPencil">
+      <point x="0.0" y="-15.5" />
+      <point x="297.5609567901233" y="253.0" />
+      <point x="940.9984567901233" y="253.0" />
+      <point x="-59.125" y="15.5" />
+    </edge>
+    <edge source="net.sourceforge.bprocessor.gl.tool.ConstructorTool" target="net.sourceforge.bprocessor.gl.tool.AbstractPencil">
+      <point x="0.0" y="-15.5" />
+      <point x="1366.6234567901233" y="283.0" />
+      <point x="1026.9984567901233" y="283.0" />
+      <point x="26.875" y="15.5" />
+    </edge>
+    <edge source="net.sourceforge.bprocessor.gl.tool.FinalMoveTool" target="net.sourceforge.bprocessor.gl.tool.AbstractPencil">
+      <point x="0.0" y="-15.5" />
+      <point x="1209.1234567901233" y="293.0" />
+      <point x="1016.2484567901233" y="293.0" />
+      <point x="16.125" y="15.5" />
+    </edge>
+    <edge source="net.sourceforge.bprocessor.gl.tool.EraserTool" target="net.sourceforge.bprocessor.gl.tool.AbstractTool">
+      <point x="0.0" y="-15.5" />
+      <point x="1733.1234567901233" y="132.0" />
+      <point x="987.0401234567898" y="132.0" />
+      <point x="55.916666666666515" y="15.5" />
+    </edge>
+    <edge source="net.sourceforge.bprocessor.gl.tool.TapeMeasure" target="net.sourceforge.bprocessor.gl.tool.AbstractPencil">
+      <point x="0.0" y="-15.5" />
+      <point x="1521.6234567901233" y="273.0" />
+      <point x="1037.7484567901233" y="273.0" />
+      <point x="37.625" y="15.5" />
+    </edge>
+    <edge source="net.sourceforge.bprocessor.gl.tool.CameraFlyTool" target="net.sourceforge.bprocessor.gl.tool.AbstractTool">
+      <point x="0.0" y="-15.5" />
+      <point x="1314.6234567901233" y="162.0" />
+      <point x="956.5401234567898" y="162.0" />
+      <point x="25.416666666666515" y="15.5" />
+    </edge>
+    <edge source="net.sourceforge.bprocessor.gl.tool.Protractor" target="net.sourceforge.bprocessor.gl.tool.AbstractPencil">
+      <point x="0.0" y="-15.5" />
+      <point x="767.5609567901233" y="293.0" />
+      <point x="983.9984567901233" y="293.0" />
+      <point x="-16.125" y="15.5" />
+    </edge>
+    <edge source="net.sourceforge.bprocessor.gl.tool.OrbitStrategy" target="net.sourceforge.bprocessor.gl.tool.Strategy">
+      <point x="0.0" y="-15.5" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="net.sourceforge.bprocessor.gl.tool.OffsetTool" target="net.sourceforge.bprocessor.gl.tool.AbstractPencil">
+      <point x="0.0" y="-15.5" />
+      <point x="1068.1234567901233" y="303.0" />
+      <point x="1005.4984567901233" y="303.0" />
+      <point x="5.375" y="15.5" />
+    </edge>
+    <edge source="net.sourceforge.bprocessor.gl.tool.SpaceTool" target="net.sourceforge.bprocessor.gl.tool.SelectTool">
+      <point x="0.0" y="-15.5" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="net.sourceforge.bprocessor.gl.tool.PanTool" target="net.sourceforge.bprocessor.gl.tool.AbstractTool">
+      <point x="0.0" y="-15.5" />
+      <point x="314.1234567901233" y="142.0" />
+      <point x="885.3734567901233" y="142.0" />
+      <point x="-45.75" y="15.5" />
+    </edge>
+    <edge source="net.sourceforge.bprocessor.gl.tool.RotationTool" target="net.sourceforge.bprocessor.gl.tool.AbstractPencil">
+      <point x="0.0" y="-15.5" />
+      <point x="932.1234567901233" y="303.0" />
+      <point x="994.7484567901233" y="303.0" />
+      <point x="-5.375" y="15.5" />
+    </edge>
+    <edge source="net.sourceforge.bprocessor.gl.tool.ZoomTool" target="net.sourceforge.bprocessor.gl.tool.AbstractTool">
+      <point x="0.0" y="-15.5" />
+      <point x="1603.6234567901233" y="142.0" />
+      <point x="976.8734567901233" y="142.0" />
+      <point x="45.75" y="15.5" />
+    </edge>
+    <edge source="net.sourceforge.bprocessor.gl.tool.SelectTool" target="net.sourceforge.bprocessor.gl.tool.AbstractTool">
+      <point x="0.0" y="-15.5" />
+      <point x="54.5" y="132.0" />
+      <point x="875.2067901234566" y="132.0" />
+      <point x="-55.91666666666674" y="15.5" />
+    </edge>
+    <edge source="net.sourceforge.bprocessor.gl.tool.Pencil" target="net.sourceforge.bprocessor.gl.tool.AbstractPencil">
+      <point x="0.0" y="-15.5" />
+      <point x="534.5609567901233" y="273.0" />
+      <point x="962.4984567901233" y="273.0" />
+      <point x="-37.625" y="15.5" />
+    </edge>
+    <edge source="net.sourceforge.bprocessor.gl.tool.RelationTool" target="net.sourceforge.bprocessor.gl.tool.AbstractPencil">
+      <point x="0.0" y="-15.5" />
+      <point x="1666.1234567901233" y="263.0" />
+      <point x="1048.4984567901233" y="263.0" />
+      <point x="48.375" y="15.5" />
+    </edge>
+    <edge source="net.sourceforge.bprocessor.gl.tool.ClipplaneTool" target="net.sourceforge.bprocessor.gl.tool.AbstractTool">
+      <point x="0.0" y="-15.5" />
+      <point x="1465.6234567901233" y="152.0" />
+      <point x="966.7067901234566" y="152.0" />
+      <point x="35.58333333333326" y="15.5" />
+    </edge>
+    <edge source="net.sourceforge.bprocessor.gl.tool.SpaceSelectTool" target="net.sourceforge.bprocessor.gl.tool.AbstractTool">
+      <point x="0.0" y="-15.5" />
+      <point x="1156.1234567901233" y="172.0" />
+      <point x="946.3734567901233" y="172.0" />
+      <point x="15.25" y="15.5" />
+    </edge>
+    <edge source="net.sourceforge.bprocessor.gl.tool.PanStrategy" target="net.sourceforge.bprocessor.gl.tool.Strategy">
+      <point x="0.0" y="-15.5" />
+      <point x="58.5" y="455.0" />
+      <point x="168.0" y="455.0" />
+      <point x="-32.0" y="15.5" />
+    </edge>
+    <edge source="net.sourceforge.bprocessor.gl.tool.AbstractPencil" target="net.sourceforge.bprocessor.gl.tool.AbstractTool">
+      <point x="0.0" y="-15.5" />
+      <point x="1000.1234567901233" y="182.0" />
+      <point x="936.2067901234566" y="182.0" />
+      <point x="5.0833333333332575" y="15.5" />
+    </edge>
+    <edge source="net.sourceforge.bprocessor.gl.tool.FocusTool" target="net.sourceforge.bprocessor.gl.tool.AbstractTool">
+      <point x="0.0" y="-15.5" />
+      <point x="862.1234567901233" y="182.0" />
+      <point x="926.0401234567901" y="182.0" />
+      <point x="-5.0833333333332575" y="15.5" />
+    </edge>
+    <edge source="net.sourceforge.bprocessor.gl.tool.RectTool" target="net.sourceforge.bprocessor.gl.tool.AbstractPencil">
+      <point x="0.0" y="-15.5" />
+      <point x="644.5609567901233" y="283.0" />
+      <point x="973.2484567901233" y="283.0" />
+      <point x="-26.875" y="15.5" />
+    </edge>
+    <edge source="net.sourceforge.bprocessor.gl.tool.CameraTool" target="net.sourceforge.bprocessor.gl.tool.AbstractTool">
+      <point x="0.0" y="-15.5" />
+      <point x="441.1234567901233" y="152.0" />
+      <point x="895.5401234567901" y="152.0" />
+      <point x="-35.58333333333326" y="15.5" />
+    </edge>
+    <edge source="net.sourceforge.bprocessor.gl.tool.SelectStrategy" target="net.sourceforge.bprocessor.gl.tool.Strategy">
+      <point x="0.0" y="-15.5" />
+      <point x="348.0" y="455.0" />
+      <point x="232.0" y="455.0" />
+      <point x="32.0" y="15.5" />
+    </edge>
+    <edge source="net.sourceforge.bprocessor.gl.tool.AbstractTool" target="net.sourceforge.bprocessor.gl.tool.Tool">
+      <point x="0.0" y="-15.5" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="net.sourceforge.bprocessor.gl.tool.CameraWalkTool" target="net.sourceforge.bprocessor.gl.tool.AbstractTool">
+      <point x="0.0" y="-15.5" />
+      <point x="594.6234567901233" y="162.0" />
+      <point x="905.7067901234566" y="162.0" />
+      <point x="-25.416666666666742" y="15.5" />
+    </edge>
+    <edge source="net.sourceforge.bprocessor.gl.tool.ArcTool" target="net.sourceforge.bprocessor.gl.tool.AbstractPencil">
+      <point x="0.0" y="-15.5" />
+      <point x="427.5609567901233" y="263.0" />
+      <point x="951.7484567901233" y="263.0" />
+      <point x="-48.375" y="15.5" />
+    </edge>
+    <edge source="net.sourceforge.bprocessor.gl.tool.ExtendTool" target="net.sourceforge.bprocessor.gl.tool.AbstractPencil">
+      <point x="0.0" y="-15.5" />
+      <point x="1803.1234567901233" y="253.0" />
+      <point x="1059.2484567901233" y="253.0" />
+      <point x="59.125" y="15.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.2999999999999998" x="929.4615384615386" y="284.4615384615385" />
+  <SelectedNodes>
+    <node>net.sourceforge.bprocessor.gl.tool.ShiftActionListener</node>
+  </SelectedNodes>
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

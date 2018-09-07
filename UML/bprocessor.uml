@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>net.sourceforge.bprocessor</OriginalElement>
+  <nodes>
+    <node x="186.0" y="157.0">net.sourceforge.bprocessor.parser</node>
+    <node x="158.0" y="233.0">net.sourceforge.bprocessor.gui</node>
+    <node x="0.0" y="309.0">net.sourceforge.bprocessor.Loader</node>
+    <node x="134.0" y="309.0">net.sourceforge.bprocessor.Main</node>
+    <node x="0.0" y="233.0">net.sourceforge.bprocessor.Application</node>
+    <node x="13.0" y="81.0">net.sourceforge.bprocessor.gl</node>
+    <node x="0.0" y="0.0">net.sourceforge.bprocessor.model</node>
+    <node x="0.0" y="157.0">net.sourceforge.bprocessor.packages</node>
+    <node x="167.0" y="0.0">net.sourceforge.bprocessor.sensobyg</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="net.sourceforge.bprocessor.gl" target="net.sourceforge.bprocessor.model">
+      <point x="0.0" y="-15.5" />
+      <point x="0.0" y="15.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="247.5" y="269.5" />
+  <SelectedNodes>
+    <node>net.sourceforge.bprocessor.parser</node>
+  </SelectedNodes>
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
