@@ -47,41 +47,43 @@ b-processor中包含程序的主方法，另有重要的子空间：
 
 ![](assets/markdown-img-paste-2018090709512217.png)
 
-    //保存当前状态
-    public void checkpoint() {
-        //将目前所有接口自Parametic的实体参数化
-        final Bmodel state = Persistence.externalize();
-        if (state != null) {
-            this.redoStack.clear();
-            if (this.currentState != null) {
-                this.undoStack.push(this.currentState);
-                if (this.undoStack.size() > 5) {
-                    this.undoStack.remove(0);
-                }
+```java
+//保存当前状态
+public void checkpoint() {
+    //将目前所有接口自Parametic的实体参数化
+    final Bmodel state = Persistence.externalize();
+    if (state != null) {
+        this.redoStack.clear();
+        if (this.currentState != null) {
+            this.undoStack.push(this.currentState);
+            if (this.undoStack.size() > 5) {
+                this.undoStack.remove(0);
             }
-            this.currentState = state;
         }
+        this.currentState = state;
     }
-    //撤销至上一状态
-    public void undo() {
-        if (this.canUndo()) {
-            if (this.currentState != null) {
-                this.redoStack.push(this.currentState);
-            }
-            this.setState(this.currentState = this.undoStack.pop());
-            Selection.primary().clear();
+}
+//撤销至上一状态
+public void undo() {
+    if (this.canUndo()) {
+        if (this.currentState != null) {
+            this.redoStack.push(this.currentState);
         }
+        this.setState(this.currentState = this.undoStack.pop());
+        Selection.primary().clear();
     }
-    //重做至下一状态
-    public void redo() {
-        if (this.canRedo()) {
-            if (this.currentState != null) {
-                this.undoStack.push(this.currentState);
-            }
-            this.setState(this.currentState = this.redoStack.pop());
-            Selection.primary().clear();
+}
+//重做至下一状态
+public void redo() {
+    if (this.canRedo()) {
+        if (this.currentState != null) {
+            this.undoStack.push(this.currentState);
         }
+        this.setState(this.currentState = this.redoStack.pop());
+        Selection.primary().clear();
     }
+}
+```
 
 ![](assets/markdown-img-paste-20180907100302503.png)
 
@@ -113,107 +115,109 @@ Space继承于Item，它是一个点边面的联合。
 
 向Space中插入一个mesh的代码如下。
 
-    public Mesh insert(Mesh mesh) {
-        Collection<Vertex> vertices = new LinkedList();
-        Collection<Edge> edges = new LinkedList();
-        Collection<Surface> surfaces = new LinkedList();
-        mesh.split(this.getVertices());
-        Iterator i$ = mesh.vertices().iterator();
+```java
+public Mesh insert(Mesh mesh) {
+    Collection<Vertex> vertices = new LinkedList();
+    Collection<Edge> edges = new LinkedList();
+    Collection<Surface> surfaces = new LinkedList();
+    mesh.split(this.getVertices());
+    Iterator i$ = mesh.vertices().iterator();
 
-        while(i$.hasNext()) {
-            Vertex vertex = (Vertex)i$.next();
-            vertices.add(this.insert(vertex));
-        }
-
-        i$ = mesh.edges().iterator();
-
-        while(i$.hasNext()) {
-            Edge edge = (Edge)i$.next();
-
-            try {
-                edge.check();
-                edges.add(this.insert(edge));
-            } catch (Exception var9) {
-                System.out.println("inconsistent: " + edge);
-                System.out.println("   " + edge.getFrom());
-                System.out.println("   " + edge.getTo());
-            }
-        }
-
-        i$ = mesh.surfaces().iterator();
-
-        while(i$.hasNext()) {
-            Surface surface = (Surface)i$.next();
-
-            try {
-                surface.check();
-                surfaces.add(this.insert(surface));
-            } catch (Exception var8) {
-                System.out.println("inconsistent: " + surface);
-            }
-        }
-
-        SurfaceAnalysis analysis = new SurfaceAnalysis();
-        surfaces.clear();
-        surfaces.addAll(analysis.surfaceAnalysis(this, edges));
-        Iterator i$ = surfaces.iterator();
-
-        while(i$.hasNext()) {
-            Surface current = (Surface)i$.next();
-            Geometry.holeAnalysis(current);
-        }
-
-        i$ = mesh.elements().iterator();
-
-        while(i$.hasNext()) {
-            Item element = (Item)i$.next();
-            this.add(element);
-        }
-
-        return new Mesh(surfaces, edges, vertices);
+    while(i$.hasNext()) {
+        Vertex vertex = (Vertex)i$.next();
+        vertices.add(this.insert(vertex));
     }
 
+    i$ = mesh.edges().iterator();
+
+    while(i$.hasNext()) {
+        Edge edge = (Edge)i$.next();
+
+        try {
+            edge.check();
+            edges.add(this.insert(edge));
+        } catch (Exception var9) {
+            System.out.println("inconsistent: " + edge);
+            System.out.println("   " + edge.getFrom());
+            System.out.println("   " + edge.getTo());
+        }
+    }
+
+    i$ = mesh.surfaces().iterator();
+
+    while(i$.hasNext()) {
+        Surface surface = (Surface)i$.next();
+
+        try {
+            surface.check();
+            surfaces.add(this.insert(surface));
+        } catch (Exception var8) {
+            System.out.println("inconsistent: " + surface);
+        }
+    }
+
+    SurfaceAnalysis analysis = new SurfaceAnalysis();
+    surfaces.clear();
+    surfaces.addAll(analysis.surfaceAnalysis(this, edges));
+    Iterator i$ = surfaces.iterator();
+
+    while(i$.hasNext()) {
+        Surface current = (Surface)i$.next();
+        Geometry.holeAnalysis(current);
+    }
+
+    i$ = mesh.elements().iterator();
+
+    while(i$.hasNext()) {
+        Item element = (Item)i$.next();
+        this.add(element);
+    }
+
+    return new Mesh(surfaces, edges, vertices);
+}
+```
 
 ## Vertex
 顶点结构如常。有一个特殊的字段Corner，暂时不清楚含义。
 
 ![](assets/markdown-img-paste-20180907153252797.png)
 
-对于每一个顶点，都可以在它最直接的上一层容器中，查找含有它的边：
 
-    public Set<Edge> getEdges() {
-        Set<Edge> result = new HashSet();
-        if (this.getOwner() == null) {
-            return result;
-        } else {
-            Collection edges = this.getOwner().getEdges();
-            Iterator iter = edges.iterator();
-
-            while(iter.hasNext()) {
-                Edge current = (Edge)iter.next();
-                if (current.contains(this)) {
-                    result.add(current);
-                }
-            }
-
-            return result;
-        }
-    }
-
-同样也能通过查找它的Edge，来获取含有它的面：
-
-    public Set<Surface> getSurfaces() {
-        Set<Surface> result = new HashSet();
-        Set edges = this.getEdges();
+```java
+//对于每一个顶点，都可以在它最直接的上一层容器中，查找含有它的边
+public Set<Edge> getEdges() {
+    Set<Edge> result = new HashSet();
+    if (this.getOwner() == null) {
+        return result;
+    } else {
+        Collection edges = this.getOwner().getEdges();
         Iterator iter = edges.iterator();
 
         while(iter.hasNext()) {
             Edge current = (Edge)iter.next();
-            result.addAll(current.getSurfaces());
+            if (current.contains(this)) {
+                result.add(current);
+            }
         }
 
         return result;
     }
+}
+
+//同样也能通过查找它的Edge，来获取含有它的面：
+public Set<Surface> getSurfaces() {
+    Set<Surface> result = new HashSet();
+    Set edges = this.getEdges();
+    Iterator iter = edges.iterator();
+
+    while(iter.hasNext()) {
+        Edge current = (Edge)iter.next();
+        result.addAll(current.getSurfaces());
+    }
+
+    return result;
+}
+```
 
 ## Edge
 Edge包含起点和终点。
@@ -235,19 +239,21 @@ Surface有一个边的集合来描述它的轮廓，有一个面的集合来描�
 
 在向空间中插入新边时，就需要考虑构建新的网格。
 
-    //向空间中添加边并返回产生的面片
-    public static List<Surface> insertEdges(Space space, List<Edge> edges) {
-        List<Surface> result = new LinkedList();
-        //获取边的所有顶点
-        Collection<Vertex> vertices = Edge.vertices(edges);
-        //由边和顶点构成mesh
-        Mesh mesh = new Mesh(new LinkedList(), edges, vertices);
-        //向当前空间插入mesh
-        mesh = space.insert(mesh);
-        //返回新增的面片
-        result.addAll(mesh.surfaces());
-        return result;
-    }
+```java
+//向空间中添加边并返回产生的面片
+public static List<Surface> insertEdges(Space space, List<Edge> edges) {
+    List<Surface> result = new LinkedList();
+    //获取边的所有顶点
+    Collection<Vertex> vertices = Edge.vertices(edges);
+    //由边和顶点构成mesh
+    Mesh mesh = new Mesh(new LinkedList(), edges, vertices);
+    //向当前空间插入mesh
+    mesh = space.insert(mesh);
+    //返回新增的面片
+    result.addAll(mesh.surfaces());
+    return result;
+}
+```
 
 <a name="tools"></a>
 # 绘图工具
@@ -275,58 +281,60 @@ Intersection是当前鼠标光线与空间实体的焦点，鼠标光线与空�
 ## 直线画笔
 直线画笔是最重要3D绘图工具，下面将重点分析这个工具。
 
-    public void onVertex() {
-        //第一次单击
-        if (this.start == null) {
-            //current是鼠标当前的交点
-            this.start = this.current;
-            this.active = true;
+```java
+public void onVertex() {
+    //第一次单击
+    if (this.start == null) {
+        //current是鼠标当前的交点
+        this.start = this.current;
+        this.active = true;
 
-        //第二次单击
-        } else {
-            //若和起点一致，添加Vertex并结束
-            if (this.start.vertex().equalEps(this.current.vertex())) {
-                Project.getInstance().getActiveSpace().insert(this.current.vertex());
-                Project.getInstance().propagate(Project.getInstance().getActiveSpace());
-                Project.getInstance().changed();
-                Project.getInstance().checkpoint();
-                this.cleanUp();
-                return;
-            }
-
-            //添加线段
-            Edge edge = new Edge(this.start.vertex(), this.current.vertex());
-            List<Edge> edges = new LinkedList();
-            edges.add(edge);
-            //设置当前线段为活动线
-            this.hooverEdge = edge;
-            //将当前点设置为起点
-            this.start = this.current;
-            this.incident = null;
-            //获取当前空间中的所有顶点
-            Collection vColl = Project.getInstance().getActiveSpace().getVertices();
-            //获取当前空间中的所有边
-            Collection eColl = Project.getInstance().getActiveSpace().getEdges();
-            //当前空间中包含了当前顶点
-            //当前空间中包含了当前边
-            boolean exsGeometry = this.current.type() == 1 && vColl.contains(this.current.object()) || this.current.type() == 2 && eColl.contains(this.current.object());
-            //finish表示是否结束画笔工具
-            //Geometry.insertEdges(edges)向当前空间插入了新线段
-            boolean finish = !Geometry.insertEdges(edges).isEmpty() || exsGeometry;
+    //第二次单击
+    } else {
+        //若和起点一致，添加Vertex并结束
+        if (this.start.vertex().equalEps(this.current.vertex())) {
+            Project.getInstance().getActiveSpace().insert(this.current.vertex());
             Project.getInstance().propagate(Project.getInstance().getActiveSpace());
             Project.getInstance().changed();
             Project.getInstance().checkpoint();
-            if (finish) {
-                this.cleanUp();
-                return;
-            }
+            this.cleanUp();
+            return;
         }
 
-        this.updateConstructors();
-        this.updateFeedback();
-        this.editor.repaint();
-        this.setTip(this.secondClickTip());
+        //添加线段
+        Edge edge = new Edge(this.start.vertex(), this.current.vertex());
+        List<Edge> edges = new LinkedList();
+        edges.add(edge);
+        //设置当前线段为活动线
+        this.hooverEdge = edge;
+        //将当前点设置为起点
+        this.start = this.current;
+        this.incident = null;
+        //获取当前空间中的所有顶点
+        Collection vColl = Project.getInstance().getActiveSpace().getVertices();
+        //获取当前空间中的所有边
+        Collection eColl = Project.getInstance().getActiveSpace().getEdges();
+        //当前空间中包含了当前顶点
+        //当前空间中包含了当前边
+        boolean exsGeometry = this.current.type() == 1 && vColl.contains(this.current.object()) || this.current.type() == 2 && eColl.contains(this.current.object());
+        //finish表示是否结束画笔工具
+        //Geometry.insertEdges(edges)向当前空间插入了新线段
+        boolean finish = !Geometry.insertEdges(edges).isEmpty() || exsGeometry;
+        Project.getInstance().propagate(Project.getInstance().getActiveSpace());
+        Project.getInstance().changed();
+        Project.getInstance().checkpoint();
+        if (finish) {
+            this.cleanUp();
+            return;
+        }
     }
+
+    this.updateConstructors();
+    this.updateFeedback();
+    this.editor.repaint();
+    this.setTip(this.secondClickTip());
+}
+```
 
 ![](assets/markdown-img-paste-20180907173256685.png)
 
