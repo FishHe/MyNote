@@ -13,7 +13,7 @@
   * [在C++中实现](#implincpp)
   * [在Java中调用](#useinjava)
 * [C++调用Java](#cppusejava)
-  * Test
+  * [建立Java方法](#buildjavaclass)
 
 <a name="javausecpp"></a>
 ## Java调用C++
@@ -155,4 +155,128 @@ public class JavaClient {
 <a name="cppusejava"></a>
 ## C++调用Java
 
-###
+先附上所有代码，然后一点点说明
+
+```cpp
+#include <jni.h>
+#include <iostream>
+
+int main(int argc, char * args)
+{
+	JavaVM *jvm;       /* denotes a Java VM */
+	JNIEnv *env;       /* pointer to native method interface */
+	JavaVMInitArgs vm_args; /* JDK/JRE 9 VM initialization arguments */
+	JavaVMOption* options = new JavaVMOption[1];
+
+	char ostr[] = "-Djava.class.path=H:/ProgramDesign/_MyProject/TestJNI/out/production/TestJNI";
+
+	options[0].optionString = ostr;
+	vm_args.version = JNI_VERSION_10;
+	vm_args.nOptions = 1;
+	vm_args.options = options;
+	vm_args.ignoreUnrecognized = false;
+	/* load and initialize a Java VM, return a JNI interface
+	 * pointer in env */
+	int res = JNI_CreateJavaVM(&jvm, (void**)&env, &vm_args);
+	delete options;
+	/* invoke the Main.test method using the JNI */
+	jclass cls = env->FindClass("TestJNI/JavaServer");
+	jmethodID mid = env->GetStaticMethodID(cls, "fun", "(II)I");
+	res = env->CallStaticIntMethod(cls, mid, 100, 100);
+
+	std::cout <<"The result is : "<< res<<std::endl;
+
+	/* We are done. */
+	jvm->DestroyJavaVM();
+
+	return 0;
+}
+```
+
+在C++中运行JVM（Java虚拟机），并反射其中的类，来调用成员方法。
+
+<a name="buildjavaclass"></a>
+### 建立一个要调用的Java类
+
+代码如下：
+
+```java
+package TestJNI;
+
+public class JavaServer {
+
+    public static int fun(int a,int b)
+    {
+        return a + b;
+    }
+}
+```
+
+生成class文件，也可继续打包生成jar。
+
+### 在C++中创建JavaVM
+
+JavaVM是C++中创建的Java运行环境，具体请参考官方文档：
+
+> https://docs.oracle.com/javase/10/docs/specs/jni/invocation.html
+
+下面是创建JavaVM的代码：
+
+```cpp
+JavaVM *jvm;       /* denotes a Java VM */
+JNIEnv *env;       /* pointer to native method interface */
+JavaVMInitArgs vm_args; /* JDK/JRE 9 VM initialization arguments */
+JavaVMOption* options = new JavaVMOption[1];
+
+//该参数指定了classpath
+char ostr[] = "-Djava.class.path=H:/ProgramDesign/_MyProject/TestJNI/out/production/TestJNI";
+
+options[0].optionString = ostr;
+vm_args.version = JNI_VERSION_10;
+vm_args.nOptions = 1;
+vm_args.options = options;
+vm_args.ignoreUnrecognized = false;
+/* load and initialize a Java VM, return a JNI interface
+ * pointer in env */
+int res = JNI_CreateJavaVM(&jvm, (void**)&env, &vm_args);
+
+/*
+//错误
+if(res!=0) return -1;
+*/
+
+```
+
+反射类，参数的构成方式是：<包/类名>
+```cpp
+jclass cls = env->FindClass("TestJNI/JavaServer");
+```
+
+反射类中的方法，需要给出正确的签名，签名可通过javap工具来获取：
+
+> javap.exe -s -p <类文件>
+
+JavaServer类各成员的签名为**descriptor：**
+后的内容
+
+>Compiled from "JavaServer.java"</br>
+public class TestJNI.JavaServer {</br>
+  public TestJNI.JavaServer();</br>
+    descriptor: ()V</br>
+</br>
+  public static int fun(int, int);</br>
+    descriptor: (II)I</br>
+}</br>
+
+现在，在C++中，反射方法，并调用：
+
+```cpp
+jmethodID mid = env->GetStaticMethodID(cls, "fun", "(II)I");
+res = env->CallStaticIntMethod(cls, mid, 100, 100);
+```
+
+最后，记得关闭虚拟机：
+```cpp
+/* We are done. */
+jvm->DestroyJavaVM();
+```
