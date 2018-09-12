@@ -21,7 +21,7 @@ GLCanvas类，实现了GLDrawable的接口，它包含两个重要的成员，
 和
 **GLContext context**。
 
-GLDrawable可以创建GLContext，GLDrawable与设备和窗体句柄关联，GLContext可以获取对应的GL句柄。
+GLDrawable可以创建GLContext，GLDrawable与窗体和设备句柄关联，GLContext可以获取对应的GL句柄。
 
 * GLCanvas
 
@@ -96,6 +96,172 @@ public class WindowsDummyGLDrawable extends WindowsGLDrawable {
 }
 ```
 
-## 在Java中使用C++创建的OpenGL环境
+## Java中的外部GL
 
-为了在Java中使用这个环境，我们需要把C++中的hdc和hwnd传入Java，并实现一种基于外来句柄的画图类。首先这个类应当继承于**WindowsGLDrawable**，结构与**WindowsDummyGLDrawable**非常类似，唯一区别，是它不是自动创建hdc和hwnd句柄，而是接受句柄。
+下面介绍的两个类，能够获取当前HDC与当前HGLRC。由于在同一线程中，wgl方法共享唯一的当前句柄，所以在java中调用wglGetCurrentContext()能获取相同的句柄，于是就能利用Java中的GL方法，在C++的窗体中绘图。
+
+### WindowsExternalGLDrawable
+
+```java
+public class WindowsExternalGLContext extends WindowsGLContext {
+  private boolean firstMakeCurrent = true;
+  private boolean created = true;
+  private GLContext lastContext;
+
+  public WindowsExternalGLContext() {
+    super(null, null, true);
+    hglrc = WGL.wglGetCurrentContext();
+    if (hglrc == 0) {
+      throw new GLException("Error: attempted to make an external GLContext without a drawable/context current");
+    }
+    if (DEBUG) {
+      System.err.println(getThreadName() + ": !!! Created external OpenGL context " + toHexString(hglrc) + " for " + this);
+    }
+    GLContextShareSet.contextCreated(this);
+    resetGLFunctionAvailability();
+  }
+
+  public int makeCurrent() throws GLException {
+    // Save last context if necessary to allow external GLContexts to
+    // talk to other GLContexts created by this library
+    GLContext cur = getCurrent();
+    if (cur != null && cur != this) {
+      lastContext = cur;
+      setCurrent(null);
+    }
+    return super.makeCurrent();
+  }
+
+  public void release() throws GLException {
+    super.release();
+    setCurrent(lastContext);
+    lastContext = null;
+  }
+
+  protected int makeCurrentImpl() throws GLException {
+    if (firstMakeCurrent) {
+      firstMakeCurrent = false;
+      return CONTEXT_CURRENT_NEW;
+    }
+    return CONTEXT_CURRENT;
+  }
+
+  protected void releaseImpl() throws GLException {
+  }
+
+  protected void destroyImpl() throws GLException {
+    created = false;
+    GLContextShareSet.contextDestroyed(this);
+  }
+
+  public boolean isCreated() {
+    return created;
+  }
+}
+```
+### WindowsExternalGLContext
+```java
+public class WindowsExternalGLContext extends WindowsGLContext {
+  private boolean firstMakeCurrent = true;
+  private boolean created = true;
+  private GLContext lastContext;
+
+  public WindowsExternalGLContext() {
+    super(null, null, true);
+    hglrc = WGL.wglGetCurrentContext();
+    if (hglrc == 0) {
+      throw new GLException("Error: attempted to make an external GLContext without a drawable/context current");
+    }
+    if (DEBUG) {
+      System.err.println(getThreadName() + ": !!! Created external OpenGL context " + toHexString(hglrc) + " for " + this);
+    }
+    GLContextShareSet.contextCreated(this);
+    resetGLFunctionAvailability();
+  }
+
+  public int makeCurrent() throws GLException {
+    // Save last context if necessary to allow external GLContexts to
+    // talk to other GLContexts created by this library
+    GLContext cur = getCurrent();
+    if (cur != null && cur != this) {
+      lastContext = cur;
+      setCurrent(null);
+    }
+    return super.makeCurrent();
+  }
+
+  public void release() throws GLException {
+    super.release();
+    setCurrent(lastContext);
+    lastContext = null;
+  }
+
+  protected int makeCurrentImpl() throws GLException {
+    if (firstMakeCurrent) {
+      firstMakeCurrent = false;
+      return CONTEXT_CURRENT_NEW;
+    }
+    return CONTEXT_CURRENT;
+  }
+
+  protected void releaseImpl() throws GLException {
+  }
+
+  protected void destroyImpl() throws GLException {
+    created = false;
+    GLContextShareSet.contextDestroyed(this);
+  }
+
+  public boolean isCreated() {
+    return created;
+  }
+}
+```
+
+## 利用外部GL操作C++
+
+### Java中的代码
+
+现在，定义两个方法，**getGLContext**
+用于获取Java外部的HDC和HGLRC，**renderLoop**
+用于渲染。
+
+```java
+public class JoglWithCpp {
+
+    static GLDrawable drawable;
+
+    static GLContext context;
+
+    static GL gl;
+
+    //获取外部句柄
+    public static void getGLContext(long hwnd,long hdc)
+    {
+        GLDrawableFactory factory =GLDrawableFactory.getFactory();
+        //get current DC
+        drawable = factory.createExternalGLDrawable();
+        //get current GLRC
+        context = factory.createExternalGLContext();
+        //GL
+        gl = context.getGL();
+    }
+
+    //渲染循环
+    public static void renderLoop()
+    {
+        gl.glClear(gl.GL_COLOR_BUFFER_BIT);
+        gl.glColor3f(1.0f, 0.0f, 0.0f);
+        gl.glBegin(gl.GL_LINES);
+        gl.glVertex2i(180, 15);
+        gl.glVertex2i(10, 145);
+        gl.glEnd();
+        gl.glFlush();
+    }
+}
+```
+
+### C++中的代码
+利用JVM虚拟机，调用编译好的Java代码。关于JVM虚拟机的使用方法及说明，请参这篇笔记
+
+> [Java Native Interface (JNI)](Java%20Native%20Interface.md)
