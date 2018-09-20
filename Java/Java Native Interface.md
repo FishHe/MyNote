@@ -14,6 +14,8 @@
   * [在Java中调用](#useinjava)
 * [C++调用Java](#cppusejava)
   * [建立Java方法](#buildjavaclass)
+  * [在C++中调用](#UseJavaInCpp)
+  * [在JVM中使用外部dll库](#UseDllInJVM)
 
 <a name="javausecpp"></a>
 ## Java调用C++
@@ -214,6 +216,7 @@ public class JavaServer {
 
 生成class文件，也可继续打包生成jar。
 
+<a name="UseJavaInCpp"></a>
 ### 在C++中创建JavaVM
 
 JavaVM是C++中创建的Java运行环境，具体请参考官方文档：
@@ -279,4 +282,12 @@ res = env->CallStaticIntMethod(cls, mid, 100, 100);
 ```cpp
 /* We are done. */
 jvm->DestroyJavaVM();
+```
+
+<a name="UseDllInJVM"></a>
+### 在JVM中使用外部Dll库
+JavaVM并不会在反射类时，自动调用类的Dll外部库，需要用户手动载入，需要手动强制载入dll库。
+
+```cpp
+System.loadLibrary("*.dll");
 ```
