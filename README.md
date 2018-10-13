@@ -1,7 +1,9 @@
 # MyNote
 This is a note storage of my own.
 
-After days' trying VNote, I return to Atom with it's Markdown plugins.
+> After days' trying VNote, I return to Atom with it's Markdown plugins.
+
+Due to my studying at school, I have to use
 
 **Contents**
 
