@@ -2,9 +2,61 @@
 
 > 应老板大人要求 我要将java中的b-processor移植到c++中
 
+
+# ExternalEditor
+
+BProcessor中已有Editor类，负责管理视图，为了在C++中，调用BPro，我改该类为ExternalEditor
+
+ExternalEditor要处理的消息：
+* 传递C++消息到Bpro
+* 窗体消息传递
+  - init（已完成）
+  - reshape（已否决）
+  - display（已完成）
+  - view model changed （相机状态改变）
+    - 正交投影（已完成）
+    - 透视投影（已完成）
+* 键鼠消息传递
+  - pressed（已完成）
+  - released（已完成）
+* 工具消息传递
+
+
+
 # 待修复的Bug
 
+## 颜色调整
+
+## 鼠标停留后，需要重绘
+
+参考：
+Invalidate
+InvalidateRect
+InvalidateRgn
+
+## 比例尺调整（已完成）
+
+现在将比例尺统一到和inventor的比例尺一致。
+
+## 平移与旋转（已完成）
+
+与m_trans同步，将m_trans属性，赋值给BPro的Camera。需要注意：
+
+* 相机运动是物体运动的逆
+* 物体的缩放变换需要在其它参数中表现
+
+## 透视投影Bug（已完成）
+正交投影？透视投影？
+
+在MPC中可以设置，暂时设置为正交投影，方便调试
+
+## 缩放（已完成）
+
+MPC中的缩放通过m_trans传递给物体，BPro中的缩放？
+
 ## OpenGL 多线程
+
+> 此Bug暂时不用修复，MPC没有采用多线程/双缓存机制来优化显示
 
 下面的Bug在鼠标悬停一段时间后，出现辅助绘制工具时触发。
 
