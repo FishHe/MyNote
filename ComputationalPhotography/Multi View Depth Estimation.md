@@ -1,5 +1,3 @@
-<script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
-
 # 多视深度估计中的视点选择
 
 **概念**
@@ -123,18 +121,26 @@
 > [Scale Robust Multi View Setero](https://github.com/FishHe/MyNote/blob/master/ComputationalPhotography/MVS/Scale%20Robust%20Multi%20View%20Setero.md)
 
 
-## 视点选择
+## 像素级视点选择与深度估计
 
 > **参考文献**：
 > <br>[16] 《PatchMatch Based Joint View Selection and Depthmap Estimation》
 > <br>[17] 《Pixelwise View Selection for Unstructured Multi-View Stereo》
 > <br>[18] 《Markov Random Field Modeling in Image Analysis》
 
-文献[17]与文献[16]的主要深度重建流程基于文献[3]。文献[16]与文献[17]提出了基于MRF的像素级视点选择的方法。文章使用的图模型，可参考文献[18]。
+传统密集匹配算法，只做**影像级视点选择**，较新的算法，实现了**像素级视点选择**。
+传统算法选择视点时，不需要考虑每个像素的深度，所以**视点选择**这一过程，可以独立于深度估计之前。
+在新算法中，由于**像素级视点选择**需要每个像素的深度，而**考虑每个像素的视点的深度估计**需要视点选择的结果，所以这两个步骤是迭代进行的。
+
+文献[17]与文献[16]的主要深度重建流程基于文献[3]。文献[16]提出了基于MRF的像素级视点选择的方法。文献[17]对文献[16]的模型进行了优化，考虑了多种先验信息，结合了光度一致性与几何一致性。文章使用的图模型，可参考文献[18]。
 
 ![](assets/markdown-img-paste-20181016174125167.png)
 
+下面叙述文献[16]提出的，用于像素级视点选择和深度估计的模型。
+
 ### 图模型
+
+文章定义了一种便于交错进行“深度计算”与“视点选择”的链式模型。虽然准确的影像范围的估计需要使用MRF，但为了在计算复杂度与效果间求得妥协，文章使用的是给定传播方向上的链式模型。
 
 在下面的论述中，用
 $X^{ref}$
@@ -246,26 +252,49 @@ $\boldsymbol{\theta}$
 $\boldsymbol{Z}$
 无关。
 
-假设，
+> 假设，
 $P(Z^m_l)$
 和
 $P(\theta_l)$
-都是均匀分布（因为在没有观测前，我们不能得到任何参考），但要计算最大后验概率，还需要
-$P(\boldsymbol{X})$，这是难于计算的。
+都是均匀分布（因为在没有观测前，我们不能得到任何参考），如果要计算最大后验概率，还需要
+$P(\boldsymbol{X})$，这是难于计算的。因为要对
+$\boldsymbol{Z}$
+与
+$\boldsymbol{\theta}$
+积分，过于复杂。
 
-为了避免计算
+> 为了避免计算
 $P(\boldsymbol{X})$
 ，文章使用变分推断（变分贝叶斯期望最大算法）来估计
 $P(\boldsymbol{Z},\boldsymbol{\theta}|\boldsymbol{X})$
 。
 
+上面两段引用，是文献中给出的不使用MAP方法的理由。
+但是我们知道，使用MAP方法，并不需要计算其值，也不需要计算它的证据项
+$P(\boldsymbol{X})$
+。我们只用找到它的极值位置，并给出此时的参数值，证据项是一个常数，不会影响后验概率的极值位置，不需要计算。
+
+我不明白作者的具体用意，为什么不使用MAP推断？欢迎讨论：
+
+> [Why not MAP in MVDE](https://github.com/FishHe/MyNote/issues/1)
+
+文章交替使用“固定深度时的像素级视点选择”和“固定视点时的深度更新”，来确保
+$\boldsymbol{Z}$
+与
+$\boldsymbol{\theta}$
+的独立性。
+
 ### 变分推断
 
 > **参考文献**
 > <br>[19]《A View of The EM Algorithm That Justifies Incremental, Sparse, and Other Variants》
-> <br>[20]《A Tutorial on Variational Bayesian Inference》
 
-文章[16]使用了类似[19]的算法，关于变分贝叶斯推断的详细资料，可参考文献[20]。
+> [20]《Variational Inference: Areview for Statistcians》
+> <br>[21]《A Tutorial on Variational Bayesian Inference》
+> <br>[22]《Operator Variational Inference》
+> <br>[23]《Pattern Recognition and Machine Learning》
+
+文章[16]使用的变分推断是[19]的变种，关于变分贝叶斯推断的详细资料，可参考文献[20-22]。
 
 变分推断考虑一个受限的分布族
 $q(\boldsymbol{Z},\boldsymbol{\theta})$
@@ -273,7 +302,7 @@ $q(\boldsymbol{Z},\boldsymbol{\theta})$
 $P(\boldsymbol{Z},\boldsymbol{\theta}|\boldsymbol{X})$
 ，使得两分布间的KL散度有最小值。
 
-真正的后验分布建立在隐变量
+真正的后验分布建立在未观测的变量
 $\boldsymbol{Z}=\{\boldsymbol{Z}^m|m=1,...,M\}$
 与
 $\boldsymbol{\theta}$
@@ -305,3 +334,151 @@ $$
 其中
 $\theta_l^*$
 是要被估计的参数。
+
+一旦分布
+$q_l(\theta_l)$
+被确定，
+$\theta_l$
+会被设置为
+$\theta_l^*$
+，使近似的后验分布
+$q(\boldsymbol{Z},\boldsymbol{\theta})$
+有最大值，所以
+$\theta_l^*$
+是最终的深度。总之，深度
+$\boldsymbol{\theta}$
+作为参数（而不是变量）被所有马尔可夫链共享，这将PatchMatch的采样方案无缝融合到图模型推断中。
+
+变分法从族
+$q(\boldsymbol{Z},\boldsymbol{\theta})$
+中找出一个最接近后验概率
+$q(\boldsymbol{Z},\boldsymbol{\theta}|\boldsymbol{X})$
+的分布：
+$$
+q^{opt}(\boldsymbol{Z},\boldsymbol{\theta})=\prod_{m=1}^{M}q_m^{opt}(\boldsymbol{Z}^m)
+\prod_{l=1}^Lq_l^{opt}(\theta_l)
+$$
+
+使
+$q(\boldsymbol{Z},\boldsymbol{\theta})$
+与
+$P(\boldsymbol{Z},\boldsymbol{\theta}|\boldsymbol{X})$
+之间的KL散度有最小值，且满足
+$q_m(Z^m),m=1,...,M$
+的归一化条件：
+$$
+\begin{matrix}
+\underset{q(\boldsymbol{Z},\boldsymbol{\theta})}{\text{minimize}} & KL(q(\boldsymbol{Z},\boldsymbol{\theta}),P(\boldsymbol{Z},\boldsymbol{\theta}|\boldsymbol{X})) \\
+\text{subject to} & \sum_{\boldsymbol{Z}^m}q_m(Z^m)=1,m=1,...,M
+\end{matrix}
+$$
+
+要在上述条件下最优化，文献[23]中的一种标准做法是对
+$q_m(\boldsymbol{Z}^m)$
+取对数：
+$$
+log(q_m(\boldsymbol{Z}^m))=
+\mathbb{E}_{\backslash{m}}[log(P((\boldsymbol{X},\boldsymbol{\theta},(\boldsymbol{Z}))]+\text{const}
+$$
+，其中
+$\mathbb{E}_{\backslash{m}}$
+是对所有不在
+$q_m(\boldsymbol{Z}^m)$
+中的变元求期望。
+
+于是最优化
+$q_m(\boldsymbol{Z}^m)$
+可写作：
+$$
+q_m^{opt}(\boldsymbol{Z}^m)
+\propto
+\Psi(\boldsymbol{Z}^m)\prod_{l=1}^{L} P(X_l^m|Z_l^m,\theta_l=\theta_l^*)
+\\
+\text{where } \Psi(\boldsymbol{Z}^m)=P(Z_l^m)\prod_{l=2}^{l=L}P(Z_l^m|Z_{l-1}^m)
+$$
+
+该公式的右部是（由前述转移概率所确定的）隐式马尔可夫链的联合概率，隐变量
+$q_m(\boldsymbol{Z}^m)$
+的概率可由向前-向后算法确定，参考文献[23]。这是GEM算法中的E步骤。
+
+下面求取最优深度：
+$$
+\theta_l^{opt}=\underset{\theta_l^*}{\text{argmax}}\sum_{m=1}^Mq(Z_l^m=1)lnP(X_l^m|Z_l^m=1,\theta_l=\theta_l^*)
+$$
+
+整理公式可得：
+$$
+\theta_l^{opt}=\underset{\theta_l^*}{\text{argmin}}\sum_{m=1}^Mq(Z_l^m=1)(1-\rho_l^m)^2
+$$
+
+求解最优深度相当于GEM算法中的M步骤。
+
+#### 优化
+
+然而，当源影像过多时（上百张），上述公式难于计算。如果上述公式中的
+$q(Z_l^m=1)$
+项非常小，不必计算所有源影像
+$m$
+的
+$\rho_l^m$
+。改用基于蒙特卡洛的近似公式：
+$$
+\theta_l^{opt}=\underset{\theta_l^*}{\text{argmin}}\sum_{m=1}^MP(m)(1-\rho_l^m)^2
+\\
+\text{where } P(m)=\frac{q(Z_l^m=1)}{\sum_{m=1}^Mq(Z_l^m=1)}
+$$
+
+从分布
+$P(m)$
+中抽样获得子集
+$S$
+，上述公式可化简为：
+$$
+\theta_l^{opt}=\underset{\theta_l^*}{\text{argmin}}\frac{1}{S}\sum_{m\in S}(1-\rho_l^m)^2
+$$
+
+#### 总结
+最优深度
+$\theta_l^*$
+与视点选择概率
+$P(Z_l^m)$
+的计算彼此依赖，需交替计算两者，迭代求解。
+
+### 更新策略
+
+计算近似分布的常用方法是坐标下降优化方法。也就是，当其它分布尚未确定时优化一个分布。在特定阶段，选择哪一个分布进行优化是任意的（或由应用本身决定），但每一次优化都降低了代价函数。
+
+关于隐式马尔可夫链推断的细节，可参考文献[23]。为了简化表达，下面的叙述中忽略了影像序号
+$m$。使用向前向后算法来推断隐变量
+$Z_l$。
+
+$$
+q(Z_l)=\frac{1}{A}\alpha(Z_l)\beta(Z_l)
+$$
+
+其中，
+$A$
+是归一化参数，
+$\alpha(Z_l)$
+和
+$\beta(Z_l)$
+是向前向后信息：
+
+$$
+\alpha(Z_l)=p(X_l|Z_l,\theta_l)\sum_{Z_{l-1}}\alpha(Z_{l-1})P(Z_l|Z_{l-1})
+\\
+\beta(Z_l)=\sum_{Z_{l+1}}P(X_{l+1}|Z_{l+1},\theta_{l+1})P(Z_{l+1}|Z_l)
+$$
+
+两个向前向后信息交替计算，如下图：
+
+![](assets/markdown-img-paste-20181022193305191.png)
+
+### 实验结果
+
+> **参考文献**
+> <br> [24]《Multi-View Stereo for Community Photo Collections》
+
+下图展示的是：参考影像-文献[16]的深度图-文献[24]的深度图。可以看到，基于像素级视点选择的深度估计，容易得到更连续、更准确的深度图。
+
+![](assets/markdown-img-paste-20181022194243292.png)
