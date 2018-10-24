@@ -3,6 +3,7 @@
 > 应老板大人要求 我要将java中的b-processor移植到c++中
 
 
+
 # ExternalEditor
 
 BProcessor中已有Editor类，负责管理视图，为了在C++中，调用BPro，我改该类为ExternalEditor

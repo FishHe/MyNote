@@ -1,4 +1,35 @@
-# 多视深度估计中的视点选择
+> 三维建模课程——课程作业
+
+**目录**
+
+<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
+
+- [三维建模课程读书报告<br>基于像素级视点选择的多视深度估计](#三维建模课程读书报告br基于像素级视点选择的多视深度估计)
+	- [多视立体与多视几何](#多视立体与多视几何)
+	- [深度图重建](#深度图重建)
+	- [像素级视点选择与深度估计](#像素级视点选择与深度估计)
+		- [图模型](#图模型)
+		- [变分推断](#变分推断)
+			- [优化](#优化)
+			- [总结](#总结)
+		- [更新策略](#更新策略)
+		- [实验结果](#实验结果)
+	- [读书报告结论](#读书报告结论)
+- [利用 Smart3D 软件进行3D建模](#利用-smart3d-软件进行3d建模)
+	- [测试数据集](#测试数据集)
+	- [处理结果](#处理结果)
+		- [飞行轨迹](#飞行轨迹)
+		- [模型视图](#模型视图)
+			- [模型视图1](#模型视图1)
+			- [模型视图2](#模型视图2)
+- [参考文献](#参考文献)
+
+<!-- /TOC -->
+
+# 三维建模课程读书报告<br>基于像素级视点选择的多视深度估计
+
+这篇读书报告先介绍一些立体视觉系统，从中选出效果最好的开源系统————**COLMAP**，分析其深度估计算法（核心算法）。
+
 
 **概念**
 
@@ -19,11 +50,6 @@
 
 > 多视深度估计只是MVS系统中的一个中间步骤，这里先介绍行业知名的MVS系统。
 
-> **参考文献**：
-> <br>[1] 《State of the Art in High Density Image Matching》
-> <br>[2] 《Multi View Geomery in Computer Vison》 **MVG推荐教程**
-> <br>[3] 《Multi-View Stereo: A Tutorial》 **MVS推荐教程**
-
 在MVS系统中，通常先估计所有视点的深度图，然后将深度图融合成点云，一些知名的开源MVS系统如下表：
 
 | Project |  Language | License |
@@ -35,15 +61,17 @@
 [OpenMVS](https://github.com/cdcseacave/openMVS/) | C++  (CUDA optional) | AGPL3|
 [PMVS](https://github.com/pmoulon/CMVS-PMVS) | C++ CUDA | GNU General Public License - contamination|
 [SMVS Shading-aware Multi-view Stereo](https://github.com/flanggut/smvs) | C++ | BSD-3-Clause license |
+|[Colmap](https://github.com/colmap/colmap) | C++ | GNU General Public License - contamination|
 
 一些代表性软件：
 
 |项目|版权|点云密度|速度|
-| --------- | -------- | ------------------------------ | ------------------------ |
-| SURE      | 闭源免费 | &star;&star;                   | &star;&star;&star;&star; |
-| MicMac    | 开源免费 | &star;&star;&star;&star;&star; | &star;&star;             |
-| PMVS      | 开源免费 | &star;                         | &star;                   |
-| PhotoScan | 商业收费 | &star;&star;&star;&star;       | &star;&star;&star;&star; |
+| --------- | -------- | ------------------------------ | ------------------------------ |
+| SURE      | 闭源免费 | &star;&star;                   | &star;&star;&star;&star;       |
+| MicMac    | 开源免费 | &star;&star;&star;&star;&star; | &star;&star;                   |
+| PMVS      | 开源免费 | &star;                         | &star;                         |
+| PhotoScan | 商业收费 | &star;&star;&star;&star;       | &star;&star;&star;&star;       |
+| COLMAP    | 开源免费 | &star;&star;&star;&star;&star; | &star;&star;&star;&star;&star; |
 
 应当特别说明的是：
 
@@ -55,7 +83,7 @@
 
 ![](assets/markdown-img-paste-20181016171832788.png)
 
-上面的测试结果引用自文献[1]。在这些MVS系统中，都包括深度图重建这一过程，这是产生密集点云所必须的。在整个密集点云产生流程中，深度图重建算法在系统中的地位至关重，它最困难且最耗时。MVS系统需要为深度图重建提供一些必要的前处理流程，在进行深度重建以前，应有以下数据：
+上面的测试结果引用自文献[1]。**COLMAP**的效果与速度表现都非常优秀，但文献[1]发表时，COLMAP还未问世。在这些MVS系统中，都包括深度图重建这一过程，这是产生密集点云所必须的。在整个密集点云产生流程中，深度图重建算法在系统中的地位至关重，它最困难且最耗时。MVS系统需要为深度图重建提供一些必要的前处理流程，在进行深度重建以前，应有以下数据：
 
 * 去畸变的影像
 * 每张影像的姿态
@@ -78,23 +106,6 @@
 
 ## 深度图重建
 
-> **参考文献**：
-> <br>[4] 《Scale Robust Multi View Stereo》
-
-> [5] 《Using Multiple Hypotheses to Improve Depth-Maps for Multi-View Stereo》
-> <br>[6] 《Real-time Plane-sweeping Stereo with Multiple Sweeping Directions》
-> <br>[7] 《Multi-View Stereo: Redundancy Benefits for 3D Reconstruction》
-
-> [8] 《Accurate, Dense, and Robust Multi-View Stereopsis》
-> <br>[9] 《Progressive Prioritized Multi-view Stereo》
-> <br>[10] 《Multi-View Stereo for Community Photo Collections》
-
-> [11] 《Accurate and Efficient Stereo Processing by Semi-Global Matching and Mutual Information》
-> <br>[12] 《Stereo Vision in Structured Environments by Consistent Semi-Global Matching》
-> <br>[13] 《Stereo Processing by Semiglobal Matching and Mutual Information》
-
-> [14] 《PatchMatch: A Randomized Correspondence Algorithm for Structural Image Editing》
-> <br>[15] 《PatchMatch Stereo - Stereo Matching with Slanted Support Windows》
 
 ![](assets/markdown-img-paste-20181017111604492.png)
 
@@ -123,10 +134,6 @@
 
 ## 像素级视点选择与深度估计
 
-> **参考文献**：
-> <br>[16] 《PatchMatch Based Joint View Selection and Depthmap Estimation》
-> <br>[17] 《Pixelwise View Selection for Unstructured Multi-View Stereo》
-> <br>[18] 《Markov Random Field Modeling in Image Analysis》
 
 传统密集匹配算法，只做**影像级视点选择**，较新的算法，实现了**像素级视点选择**。
 传统算法选择视点时，不需要考虑每个像素的深度，所以**视点选择**这一过程，可以独立于深度估计之前。
@@ -199,7 +206,7 @@ $X^{ref}_{l}$
 
 $$P(X_{l}^{m}|Z_{l}^{m},\theta_{l},X^{ref}_{l})=
 \begin{cases}
-\frac{1}{NA}e^{-\frac{(1-\rho _{l}^{m})^2)}{2\sigma ^ 2}} & \text{ if } Z_{l}^{m}= 1\\
+\frac{1}{NA}e^{-\frac{(1-\rho _{l}^{m})^2}{2\sigma ^ 2}} & \text{ if } Z_{l}^{m}= 1\\
 \frac{1}{N}\mathcal{U} & \text{ if } Z_{l}^{m}= 0
 \end{cases}$$
 
@@ -285,14 +292,6 @@ $\boldsymbol{\theta}$
 的独立性。
 
 ### 变分推断
-
-> **参考文献**
-> <br>[19]《A View of The EM Algorithm That Justifies Incremental, Sparse, and Other Variants》
-
-> [20]《Variational Inference: Areview for Statistcians》
-> <br>[21]《A Tutorial on Variational Bayesian Inference》
-> <br>[22]《Operator Variational Inference》
-> <br>[23]《Pattern Recognition and Machine Learning》
 
 文章[16]使用的变分推断是[19]的变种，关于变分贝叶斯推断的详细资料，可参考文献[20-22]。
 
@@ -476,9 +475,102 @@ $$
 
 ### 实验结果
 
-> **参考文献**
-> <br> [24]《Multi-View Stereo for Community Photo Collections》
 
-下图展示的是：参考影像-文献[16]的深度图-文献[24]的深度图。可以看到，基于像素级视点选择的深度估计，容易得到更连续、更准确的深度图。
+下图展示的是：参考影像--文献[16]重建的深度图--文献[24]重建的深度图。可以看到，基于像素级视点选择的深度估计，容易得到更连续、更准确的深度图。
 
 ![](assets/markdown-img-paste-20181022194243292.png)
+
+下面是VisualSFM、MVE、COLMAP和Pix4D的重建效果，参考文献[25]。
+
+![](assets/markdown-img-paste-20181023111422669.png)
+
+![](assets/markdown-img-paste-20181023111505709.png)
+
+![](assets/markdown-img-paste-20181023111550486.png)
+
+![](assets/markdown-img-paste-20181023111620391.png)
+
+## 读书报告结论
+
+* 基于像素级视点选择的多视深度估计算法，鲁棒性强，精度高。
+* 在不考虑Mesh生成算法下，COLMAP是当前流行的开源系统中，GPU加速效果最好，精度最高的MVS系统。
+* MVE提供的FSSR网格重建算法优于COLMAP使用的PoissonRecon。
+
+# 利用 Smart3D 软件进行3D建模
+
+分别使用“仅下视影像”和“下视影像+倾斜影像”两组数据，利用Smart3D软件进行三维模型重建。
+
+## 测试数据集
+
+**下视影像**
+
+![](assets/markdown-img-paste-2018102312063074.png)
+
+**倾斜影像-45°横向**
+
+![](assets/markdown-img-paste-20181023120703762.png)
+
+**倾斜影像-45°纵向**
+
+![](assets/markdown-img-paste-20181023120740365.png)
+
+## 处理结果
+
+### 飞行轨迹
+
+![](assets/markdown-img-paste-20181024112606280.png)
+
+该模型的原始影像拍摄过程中，无人机飞行轨迹是传统的航飞轨迹，这种规则的轨迹便于构建地图（便于产生正射影像），但不适合用于三维建模。一些用于三维建模的无人机路径规划算法已经提出，可参考文献[26-27]。
+
+下图是文献[27]的路径规划方案：
+
+![](assets/markdown-img-paste-20181024112658697.png)
+
+### 模型视图
+
+下面两个视图，第一幅影像是“仅使用下视影像”构建的模型截图，第二幅影像是“使用下视影像+倾斜影像”构建的模型截图。
+
+使用倾斜影像，能得到更高的侧面精度。
+
+#### 模型视图1
+
+
+![](assets/markdown-img-paste-2018102411145660.png)
+
+![](assets/markdown-img-paste-20181024111437386.png)
+
+#### 模型视图2
+
+![](assets/markdown-img-paste-20181024111511204.png)
+
+![](assets/markdown-img-paste-20181024111518723.png)
+
+# 参考文献
+
+> [1] 《State of the Art in High Density Image Matching》
+> <br>[2] 《Multi View Geomery in Computer Vison》 **MVG推荐教程**
+> <br>[3] 《Multi-View Stereo: A Tutorial》 **MVS推荐教程**
+> <br>[4] 《Scale Robust Multi View Stereo》
+> <br>[5] 《Using Multiple Hypotheses to Improve Depth-Maps for Multi-View Stereo》
+> <br>[6] 《Real-time Plane-sweeping Stereo with Multiple Sweeping Directions》
+> <br>[7] 《Multi-View Stereo: Redundancy Benefits for 3D Reconstruction》
+> <br>[8] 《Accurate, Dense, and Robust Multi-View Stereopsis》
+> <br>[9] 《Progressive Prioritized Multi-view Stereo》
+> <br>[10] 《Multi-View Stereo for Community Photo Collections》
+> <br>[11] 《Accurate and Efficient Stereo Processing by Semi-Global Matching and Mutual Information》
+> <br>[12] 《Stereo Vision in Structured Environments by Consistent Semi-Global Matching》
+> <br>[13] 《Stereo Processing by Semiglobal Matching and Mutual Information》
+> <br>[14] 《PatchMatch: A Randomized Correspondence Algorithm for Structural Image Editing》
+> <br>[15] 《PatchMatch Stereo - Stereo Matching with Slanted Support Windows》
+> <br>[16] 《PatchMatch Based Joint View Selection and Depthmap Estimation》
+> <br>[17] 《Pixelwise View Selection for Unstructured Multi-View Stereo》**COLMAP算法论文**
+> <br>[18] 《Markov Random Field Modeling in Image Analysis》
+> <br>[19] 《A View of The EM Algorithm That Justifies Incremental, Sparse, and Other Variants》
+> <br>[20] 《Variational Inference: Areview for Statistcians》
+> <br>[21] 《A Tutorial on Variational Bayesian Inference》
+> <br>[22] 《Operator Variational Inference》
+> <br>[23] 《Pattern Recognition and Machine Learning》
+> <br>[24] 《Multi-View Stereo for Community Photo Collections》 **MVE算法论文**
+> <br>[25] 《Supplementary Material: Aerial Path Planning for Urban Scene Reconstruction: A Continuous Optimization Method and Benchmark》 **MVE无人机路径规划的附属资料**
+> <br>[26] 《Submodular Trajectory Optimization for Aerial 3D Scanning》
+> <br>[27] 《Aerial Path Planning for Urban Scene Reconstruction: A Continuous Optimization Method and Benchmark》
