@@ -7,4 +7,3 @@ MPC的3D绘制，几乎集中于****
 MPC的3D视图由几个部分构成：
 * 点云OpenGL
 * inventor
-*
