@@ -1,0 +1,192 @@
+\begin{thebibliography}{10}
+
+\bibitem{7298948}
+and T.~{Leung}, Y.~{Jia}, R.~{Sukthankar}, and A.~C. {Berg}.
+\newblock Matchnet: Unifying feature and metric learning for patch-based
+  matching.
+\newblock In {\em 2015 IEEE Conference on Computer Vision and Pattern
+  Recognition (CVPR)}, pages 3279--3286, June 2015.
+
+\bibitem{Chambon2011}
+Sylvie Chambon and Alain Crouzil.
+\newblock Similarity measures for image matching despite occlusions in stereo
+  vision.
+\newblock {\em Pattern Recognition}, 44:2063--2075, 09 2011.
+
+\bibitem{517097}
+R.~T. {Collins}.
+\newblock A space-sweep approach to true multi-image matching.
+\newblock In {\em Proceedings CVPR IEEE Computer Society Conference on Computer
+  Vision and Pattern Recognition}, pages 358--363, June 1996.
+
+\bibitem{7410673}
+A.~{Dosovitskiy}, P.~{Fischer}, E.~{Ilg}, P.~{Häusser}, C.~{Hazirbas},
+  V.~{Golkov}, P.~v.~d. {Smagt}, D.~{Cremers}, and T.~{Brox}.
+\newblock Flownet: Learning optical flow with convolutional networks.
+\newblock In {\em 2015 IEEE International Conference on Computer Vision
+  (ICCV)}, pages 2758--2766, Dec 2015.
+
+\bibitem{4270270}
+D.~{Gallup}, J.~{Frahm}, P.~{Mordohai}, Q.~{Yang}, and M.~{Pollefeys}.
+\newblock Real-time plane-sweeping stereo with multiple sweeping directions.
+\newblock In {\em 2007 IEEE Conference on Computer Vision and Pattern
+  Recognition}, pages 1--8, June 2007.
+
+\bibitem{DBLP:journals/corr/abs-1804-00650}
+Po{-}Han Huang, Kevin Matzen, Johannes Kopf, Narendra Ahuja, and Jia{-}Bin
+  Huang.
+\newblock Deepmvs: Learning multi-view stereopsis.
+\newblock {\em CoRR}, abs/1804.00650, 2018.
+
+\bibitem{ISKB18}
+E.~Ilg, T.~Saikia, M.~Keuper, and T.~Brox.
+\newblock Occlusions, motion and depth boundaries with a generic network for
+  disparity, optical flow or scene flow estimation.
+\newblock In {\em European Conference on Computer Vision (ECCV)}, 2018.
+
+\bibitem{DBLP:journals/corr/IlgMSKDB16}
+Eddy Ilg, Nikolaus Mayer, Tonmoy Saikia, Margret Keuper, Alexey Dosovitskiy,
+  and Thomas Brox.
+\newblock Flownet 2.0: Evolution of optical flow estimation with deep networks.
+\newblock {\em CoRR}, abs/1612.01925, 2016.
+
+\bibitem{jensen2014large}
+Rasmus Jensen, Anders Dahl, George Vogiatzis, Engil Tola, and Henrik Aan{\ae}s.
+\newblock Large scale multi-view stereopsis evaluation.
+\newblock In {\em 2014 IEEE Conference on Computer Vision and Pattern
+  Recognition}, pages 406--413. IEEE, 2014.
+
+\bibitem{DBLP:journals/corr/abs-1708-01749}
+Mengqi Ji, Juergen Gall, Haitian Zheng, Yebin Liu, and Lu~Fang.
+\newblock Surfacenet: An end-to-end 3d neural network for multiview stereopsis.
+\newblock {\em CoRR}, abs/1708.01749, 2017.
+
+\bibitem{Knapitsch2017}
+Arno Knapitsch, Jaesik Park, Qian-Yi Zhou, and Vladlen Koltun.
+\newblock Tanks and temples: Benchmarking large-scale scene reconstruction.
+\newblock {\em ACM Transactions on Graphics}, 36(4), 2017.
+
+\bibitem{leibe_shading-aware_2016}
+Fabian Langguth, Kalyan Sunkavalli, Sunil Hadap, and Michael Goesele.
+\newblock Shading-{Aware} {Multi}-view {Stereo}.
+\newblock In Bastian Leibe, Jiri Matas, Nicu Sebe, and Max Welling, editors,
+  {\em Computer {Vision} – {ECCV} 2016}, volume 9907, pages 469--485.
+  Springer International Publishing, Cham, 2016.
+
+\bibitem{7350114}
+Z.~{Li}, K.~{Wang}, W.~{Zuo}, D.~{Meng}, and L.~{Zhang}.
+\newblock Detail-preserving and content-aware variational multi-view stereo
+  reconstruction.
+\newblock {\em IEEE Transactions on Image Processing}, 25(2):864--877, Feb
+  2016.
+
+\bibitem{MIFDB16}
+N.~Mayer, E.~Ilg, P.~H{\"a}usser, P.~Fischer, D.~Cremers, A.~Dosovitskiy, and
+  T.~Brox.
+\newblock A large dataset to train convolutional networks for disparity,
+  optical flow, and scene flow estimation.
+\newblock In {\em IEEE International Conference on Computer Vision and Pattern
+  Recognition (CVPR)}, 2016.
+\newblock arXiv:1512.02134.
+
+\bibitem{Srinivasan2018}
+Pratul P.~Srinivasan, Rahul Garg, Neal Wadhwa, Ren Ng, and Jonathan T.~Barron.
+\newblock Aperture supervision for monocular depth estimation.
+\newblock 11 2017.
+
+\bibitem{DBLP:journals/corr/abs-1901-01535}
+Despoina Paschalidou, Ali~Osman Ulusoy, Carolin Schmitt, Luc J.~Van Gool, and
+  Andreas Geiger.
+\newblock Raynet: Learning volumetric 3d reconstruction with ray potentials.
+\newblock {\em CoRR}, abs/1901.01535, 2019.
+
+\bibitem{Rhemann:2011:FCF:2191740.2191908}
+C.~Rhemann, A.~Hosni, M.~Bleyer, C.~Rother, and M.~Gelautz.
+\newblock Fast cost-volume filtering for visual correspondence and beyond.
+\newblock In {\em Proceedings of the 2011 IEEE Conference on Computer Vision
+  and Pattern Recognition}, CVPR '11, pages 3017--3024, Washington, DC, USA,
+  2011. IEEE Computer Society.
+
+\bibitem{DBLP:journals/corr/RieglerUG16}
+Gernot Riegler, Ali~Osman Ulusoy, and Andreas Geiger.
+\newblock Octnet: Learning deep 3d representations at high resolutions.
+\newblock {\em CoRR}, abs/1611.05009, 2016.
+
+\bibitem{Romanoni2019TAPAMVSTP}
+Andrea Romanoni and Matteo Matteucci.
+\newblock Tapa-mvs: Textureless-aware patchmatch multi-view stereo.
+\newblock {\em CoRR}, abs/1903.10929, 2019.
+
+\bibitem{ShujiSAKAI}
+Shuji SAKAI, Koichi ITO, Takafumi AOKI, Takafumi WATANABE, and Hiroki UNTEN.
+\newblock Phase-based window matching with geometric correction for multi-view
+  stereo.
+\newblock {\em IEICE Transactions on Information and Systems},
+  E98.D:1818--1828, 10 2015.
+
+\bibitem{Scharstein2001}
+D.~{Scharstein}, R.~{Szeliski}, and R.~{Zabih}.
+\newblock A taxonomy and evaluation of dense two-frame stereo correspondence
+  algorithms.
+\newblock In {\em Proceedings IEEE Workshop on Stereo and Multi-Baseline Vision
+  (SMBV 2001)}, pages 131--140, Dec 2001.
+
+\bibitem{schoeps2017cvpr}
+Thomas Sch\"ops, Johannes~L. Sch\"onberger, Silvano Galliani, Torsten Sattler,
+  Konrad Schindler, Marc Pollefeys, and Andreas Geiger.
+\newblock A multi-view stereo benchmark with high-resolution images and
+  multi-camera videos.
+\newblock In {\em Conference on Computer Vision and Pattern Recognition
+  (CVPR)}, 2017.
+
+\bibitem{Simonyan14c}
+K.~Simonyan and A.~Zisserman.
+\newblock Very deep convolutional networks for large-scale image recognition.
+\newblock {\em CoRR}, abs/1409.1556, 2014.
+
+\bibitem{DBLP:journals/corr/UmmenhoferZUMID16}
+Benjamin Ummenhofer, Huizhong Zhou, Jonas Uhrig, Nikolaus Mayer, Eddy Ilg,
+  Alexey Dosovitskiy, and Thomas Brox.
+\newblock Demon: Depth and motion network for learning monocular stereo.
+\newblock {\em CoRR}, abs/1612.02401, 2016.
+
+\bibitem{Wang-2018-AOCNN}
+Peng-Shuai Wang, Chun-Yu Sun, Yang Liu, and Xin Tong.
+\newblock {Adaptive O-CNN: A Patch-based Deep Representation of 3D Shapes}.
+\newblock {\em ACM Transactions on Graphics (SIGGRAPH Asia)}, 37(6), 2018.
+
+\bibitem{Xu2015}
+Shibiao Xu, Feihu Zhang, Xiaofei He, Xukun Shen, and Xiaopeng Zhang.
+\newblock Pm-pm: Patchmatch with potts model for object segmentation and stereo
+  matching.
+\newblock {\em IEEE transactions on image processing : a publication of the
+  IEEE Signal Processing Society}, 24, 03 2015.
+
+\bibitem{DBLP:journals/corr/abs-1804-02505}
+Yao Yao, Zixin Luo, Shiwei Li, Tian Fang, and Long Quan.
+\newblock Mvsnet: Depth inference for unstructured multi-view stereo.
+\newblock {\em CoRR}, abs/1804.02505, 2018.
+
+\bibitem{DBLP:journals/corr/abs-1902-10556}
+Yao Yao, Zixin Luo, Shiwei Li, Tianwei Shen, Tian Fang, and Long Quan.
+\newblock Recurrent mvsnet for high-resolution multi-view stereo depth
+  inference.
+\newblock {\em CoRR}, abs/1902.10556, 2019.
+
+\bibitem{Chang2008}
+Nelson Yen-Chung~Chang, Yu-Cheng Tseng, and Tian~Sheuan Chang.
+\newblock Analysis of color space and similarity measure impact on stereo block
+  matching.
+\newblock 11 2008.
+
+\bibitem{ZUB18}
+H.~Zhou, B.~Ummenhofer, and T.~Brox.
+\newblock Deeptam: Deep tracking and mapping.
+\newblock In {\em European Conference on Computer Vision (ECCV)}, 2018.
+
+\bibitem{Zhuo:2011:DME:1994015.1994271}
+Shaojie Zhuo and Terence Sim.
+\newblock Defocus map estimation from a single image.
+\newblock {\em Pattern Recogn.}, 44(9):1852--1858, September 2011.
+
+\end{thebibliography}

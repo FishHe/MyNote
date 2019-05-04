@@ -1,5 +1,7 @@
 # Partition and Stitch with Tensor
 
+> **必须强调的是，map_fn函数效率极低，在能够用其它方法代替它时，应当避免使用**
+
 这一节介绍如何利用gather_nd()或者map_fn()函数，对一个已存在Tensor中的局部，进行函数运算。
 
 假设要对一个矩阵中的所有元素进行下面的计算：
