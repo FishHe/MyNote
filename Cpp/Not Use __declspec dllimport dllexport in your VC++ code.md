@@ -1,26 +1,42 @@
 # Not Use __declspec dllimport dllexport in VC++ code
 
-# 在WIN32编程时，务必使用标准的__declspec()修饰符
+## 使用cmake来避免使用导出符号
 
-下面是MSDN上的原句：
+### 取消全局优化
+![](assets/markdown-img-paste-20190512152452414.png)
 
-**使用 .DEF 文件从 DLL 中导出变量时，不必在变量上指定 __declspec(dllexport)。 但是，在任何使用 DLL 的文件中，必须仍在数据的声明上使用 __declspec(dllimport)。**
+### 建立模块文件的宏
+为了自动导出所有模块，在编译器链接操作以前，定义如下的宏：
 
-也就是说，即使我们成功导出了函数，我们在使用Dll函数时，也必须添加导入宏，这个工作是令人失望的。但这也强化了我对动态链接库与静态链接库的认识。
+```bat
+setlocal
+cd $(IntDir)
+if exist objects.txt (
+	del objects.txt
+)
+if exist exports.def (
+	del exports.def
+)
+for /r %%i in (*.obj) do (
+	echo %%i>>objects.txt
+)
+$(CMAKE_DIR)\cmake.exe -E __create_def exports.def objects.txt
+endlocal
+```
+> 定义了常量宏
+> **CMAKE_DIR** 要使用较新版本的CMake
 
-在编译期，编译器需要知道函数到底是来自一个动态库，还是一个静态库，才能确定它到底是在编译时就应当实现，还是要等到运行时，再从dll中获取。
+在这里输入以上的代码：
+![](assets/markdown-img-paste-20190512155041484.png)
 
-使用__declspec(dllimport)，可以让编译器知道，我希望调用的是一个动态链接库中的函数，而不使用时，编译器将会从静态链接中寻找实现。
+### 链接导出符号文件
 
-下面是一种解决方案，但我认为可行性不高，因为不知道怎么引用这些dll
-
-* Firstly, you could create static library.
-* Then use "dumpbin /LINKERMEMBER" to export all symbols from static library.
-* Parse the output.
-* Put all results in a .def file.
-* Create dll with the .def file.
+上面会产生一个exports.def模块定义文件，将该文件输入给VS的连接器：
+![](assets/markdown-img-paste-20190512155142575.png)
 
 
+
+## 以下是废弃的内容
 
 VS 2015 Update 2 后的版本 加入了新的参数
 **/WHOLEARCHIVE**
@@ -100,8 +116,6 @@ lib.exe /def:"$(TargetDir)$(TargetName).def" /machine:x86 /out:"$(TargetDir)$(Ta
 
 dumpbin /SYMBOLS $(Platform)\$(Configuration)\mdb.obj | findstr /R "().*External.*mdb_.*" > $(Platform)\$(Configuration)\mdb_symbols
 (echo EXPORTS & for /F "usebackq tokens=2 delims==|" %%E in (`type $(Platform)\$(Configuration)\mdb_symbols`) do @echo  %%E) > $(Platform)\$(Configuration)\lmdb.def
-
-但是，即使在导出过程中，我们不需要定义__declspec(dllexport)，在使用文件时，我们还是必须添加__declspec(dllimport)，也就是说，我们无法回避使用__declspec。
 
 CMAKE提供了一种解决方案，参考网站：
 

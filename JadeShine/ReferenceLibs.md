@@ -1,0 +1,53 @@
+# Open Source Libraries
+- OpenCV，Open Source Computer Vision Library
+- GDAL，Geospatial Data Abstraction Library
+- CGAL，The Computational Geometry Algorithms Library
+- VCG，The VCG Library
+- OSG，Openscenegraph
+- FFmpeg，A complete, cross-platform solution to record, convert and stream audio and video
+- wkhtmltopdf，Convert HTML to PDF using Webkit，https://wkhtmltopdf.org
+- CSFfiltering，An Easy-to-Use Airborne LiDAR Data Filtering Method Based on Cloth Simulation
+- Boost ，C++ Libraries，http://www.boost.org
+- ANN，A Library forApproximate Nearest Neighbor Searching
+- GeoTIFF，Libgeotiff is an open source library normally hosted on top of libtiff for reading, and writing GeoTIFF information tags.
+- TBB，Intel Threading Building Blocks.
+- LibLAS，LAS 1.0/1.1/1.2 ASPRS LiDAR data translation toolset.
+- Pthread，Open SourcePOSIX Threads for Win32.
+- Bundler，Structure from Motion (SfM) for Unordered Image Collections
+- CMVS，Clustering Views for Multi-view Stereo
+- PMVS2 (Patch-based Multi-view Stereo software - version 2) by Yasutaka Furukawa and Jean Ponce
+- VisualSFM : A Visual Structure from Motion System
+- MeshLab，the open source system for processing and editing 3D triangular meshes.It provides a set of tools for editing, cleaning, healing, inspecting, rendering, texturing and converting meshes.
+- Cloudcompare，3D point cloud and mesh processing software
+- openMVG，Structure from Motion computes an external camera pose per image (the motion) and a 3D point cloud (the structure) from:
+- colmap，COLMAP - Structure-from-Motion and Multi-View Stereo
+- micmac，Free open-source photogrammetry software tools
+- Multi-View Environment，The Multi-View Environment is an effort to ease the work with multi-view datasets and to support the development of algorithms based on multiple views.
+- GPUIma + fusibile，Massively Parallel Multiview Stereopsis by Surface Normal Diffusion，Depthmap fusion with depth and normal consistency check
+- OpenMVS，open Multi-View Stereo reconstruction library http://cdcseacave.github.io/openMVS
+- SMVS Shading-aware Multi-view Stereo，This repository contains an implementation of 'Shading-aware Multi-view Stereo
+- ORB_SLAM2，Real-Time SLAM for Monocular, Stereo and RGB-D Cameras, with Loop Detection and Relocalization Capabilities
+- VocabTree2，Enhanced hierarchical bag-of-word library for C++
+- CERES SOLVER，A large scale non-linear optimization library http://ceres-solver.org/
+- SBA，Sparse Bundle Adjustment from http://users.ics.forth.gr/~lourakis/sba/
+- DBoW2，Enhanced hierarchical bag-of-word library for C++
+- FLANN，LANN is a library for performing fast approximate nearest neighbor searches in high dimensional spaces.
+- nanoflann，nanoflann: a C++11 header-only library for Nearest Neighbor (NN) search with KD-trees
+- SiftGPU, A GPU implementation of David Lowe's Scale Invariant Feature Transform, Changchang wu
+- TinyEXIF, Tiny ISO-compliant C++ EXIF and XMP parsing library for JPEG.
+- SURF，peeded Up Robust Features library
+- Enblend/Enfuse - combine images with no seams
+- FreeImage，FreeImage is an Open Source library project for developers who would like to support popular graphics image formats like PNG, BMP, JPEG, TIFF and others as needed by today's multimedia applications.
+- Sqlite，SQLite is a C-language library that implements a small, fast, self-contained, high-reliability, full-featured, SQL database engine.
+- VTK，The Visualization Toolkit (VTK) is open source software for manipulating and displaying scientific data.
+- Eigen，Eigen is a C++ template library for linear algebra: matrices, vectors, numerical solvers, and related algorithms.
+- Embree，intel® Embree is a collection of high-performance ray tracing kernels, developed at Intel.
+- Expat, Welcome to Expat, a stream-oriented XML parser library written in C, Expat excels with files too large to fit RAM, and where performance and flexibility are crucial.
+- freetype2, FreeType is a freely available software library to render fonts.It is written in C, designed to be small, efficient, highly customizable, and portable while capable of producing high-quality output (glyph images) of most vector and bitmap font formats.
+- PoissonRecon, Adaptive Multigrid Solvers, Reconstructs a triangle mesh from a set of oriented 3D points by solving a Poisson system (solving a 3D Laplacian system with positional value constraints)
+- PBA, Multicore Bundle Adjustment, http://grail.cs.washington.edu/projects/mcba/
+- levmar : Levenberg-Marquardt nonlinear least squares algorithms in C/C++
+- proj.4, PROJ.4 - Cartographic Projections Library https://proj4.org
+- gflags. The gflags package contains a C++ library that implements commandline flags processing. It includes built-in support for standard types such as string and the ability to define flags in the source file in which they are used. Online documentation available at:https://gflags.github.io/gflags/
+- SuiteSparse, SuiteSparse: a suite of sparse matrix packages by T. A. Davis et al. (This repository contains copies of the official releases.)
+- VLFeat, Copyright (C) 2007-11, Andrea Vedaldi and Brian Fulkerson,Copyright (C) 2012-13, The VLFeat Team,All rights reserved.

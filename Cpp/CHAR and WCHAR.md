@@ -34,3 +34,4 @@ void main()
 	char * _str = W2A(wstr);
 }
 ```
+
